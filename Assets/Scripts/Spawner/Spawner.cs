@@ -41,9 +41,9 @@ public class Spawner : MonoBehaviour
 
     void Spawn()
     {
-        // 풀에서 0~2 인덱스 중 랜덤으로 적 종류 선택 (Enemy1, Enemy2, Enemy3)
+        // 풀에서 0~3 인덱스 중 랜덤으로 적 종류 선택 (Enemy1, Enemy2, Enemy3)
         // Random.Range(int, int)는 최댓값을 포함하지 않으므로 3으로 설정
-        GameObject enemy = Gamemanager.instance.pool.Get(Random.Range(0, 3));
+        GameObject enemy = Gamemanager.instance.pool.Get(Random.Range(0,3));
 
         // 스폰 포인트 중 랜덤 위치에 배치 (인덱스 0은 부모 자신이므로 1부터 시작)
         enemy.transform.position = spawnPoints[Random.Range(1, spawnPoints.Length)].position;
