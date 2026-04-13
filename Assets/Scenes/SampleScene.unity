@@ -9164,6 +9164,55 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1636764679}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &885745064
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 885745065}
+  - component: {fileID: 885745066}
+  m_Layer: 0
+  m_Name: Weapon0
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &885745065
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885745064}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1055480100}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &885745066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 885745064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cbfdb9d84d6c1d245ad93185f7eb9d32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 0
+  prefabId: 1
+  damage: 11
+  count: 5
+  speed: 0
 --- !u!1 &991334671
 GameObject:
   m_ObjectHideFlags: 0
@@ -9193,8 +9242,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8d2dbfa14ca4974c81d33f925b1640f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameTime: 0
+  maxGameTime: 40
   player: {fileID: 1055480101}
-  pool: {fileID: 0}
+  pool: {fileID: 1323786381}
 --- !u!4 &991334673
 Transform:
   m_ObjectHideFlags: 0
@@ -9319,6 +9370,7 @@ Transform:
   m_Children:
   - {fileID: 1673922357}
   - {fileID: 1636764679}
+  - {fileID: 885745065}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1055480101
@@ -9609,9 +9661,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefabs:
-  - {fileID: 5285533053967837937, guid: 51e756f5350a3e24fa74786d803cfa2d, type: 3}
   - {fileID: 464784019504813550, guid: 04ecc0244f6cd624dbb8ce0499e07ae7, type: 3}
-  - {fileID: 1147615490094205246, guid: 9e6b6a2c342791243b815ed721a90f29, type: 3}
+  - {fileID: 145953050213405379, guid: 042e38536768f5a4696d207d75eb06fe, type: 3}
 --- !u!4 &1323786382
 Transform:
   m_ObjectHideFlags: 0
@@ -9781,6 +9832,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPoints: []
+  spawnData:
+  - spriteType: 0
+    spawnTime: 0.5
+    health: 15
+    speed: 1.5
+  - spriteType: 1
+    spawnTime: 0.7
+    health: 20
+    speed: 1.5
+  - spriteType: 2
+    spawnTime: 0.9
+    health: 30
+    speed: 1.5
+  - spriteType: 3
+    spawnTime: 1
+    health: 35
+    speed: 1.5
 --- !u!1 &1673922356
 GameObject:
   m_ObjectHideFlags: 0

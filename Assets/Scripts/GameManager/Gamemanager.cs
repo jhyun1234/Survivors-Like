@@ -13,6 +13,9 @@ public class Gamemanager : MonoBehaviour
     /// </summary>
     public static Gamemanager instance;
 
+    public float gameTime;
+    public float maxGameTime = 4 * 10f;
+
     /// <summary>
     /// 플레이어 컨트롤러 참조. 이동 입력 벡터 등을 다른 스크립트에서 읽을 때 사용.
     /// </summary>
@@ -27,5 +30,17 @@ public class Gamemanager : MonoBehaviour
     {
         // 싱글톤 초기화: 이 오브젝트를 전역 인스턴스로 등록
         instance = this;
+    }
+    
+    void Update()
+    {
+        
+        gameTime += Time.deltaTime;
+
+        
+        if (gameTime > maxGameTime)
+        {
+            gameTime = maxGameTime;
+        }
     }
 }

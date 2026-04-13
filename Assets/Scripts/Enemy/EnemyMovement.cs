@@ -15,6 +15,9 @@ public class EnemyMovement : MonoBehaviour
     /// 적의 이동 속도. 인스펙터에서 적 종류별로 다르게 설정 가능.
     /// </summary>
     public float speed;
+    public float health;
+    public float maxHealth;
+    public RuntimeAnimatorController[] animControllers;
 
     /// <summary>
     /// 추적할 플레이어의 Rigidbody2D. OnEnable에서 자동으로 할당된다.
@@ -24,16 +27,18 @@ public class EnemyMovement : MonoBehaviour
     /// <summary>
     /// 적의 생존 여부. false이면 이동과 반전 처리를 모두 중단한다.
     /// </summary>
-    bool isLive = true; // 테스트용 true
+    bool isLive; // 테스트용 true
 
     Rigidbody2D rigid; // 물리 이동에 사용하는 Rigidbody2D 컴포넌트
     SpriteRenderer sr; // 좌우 반전 처리에 사용하는 SpriteRenderer 컴포넌트
+    Animator anim; // 애니메이션 제어에 사용하는 Animator 컴포넌트
 
     void Awake()
     {
         // 컴포넌트 캐싱 (Awake에서 한 번만 가져와 성능 최적화)
         rigid = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     void FixedUpdate()
@@ -68,5 +73,42 @@ public class EnemyMovement : MonoBehaviour
         // 풀에서 꺼내질 때마다 플레이어 타겟을 재탐색
         // 씬 재시작 또는 플레이어 오브젝트 변경 시에도 올바른 타겟을 참조하도록 보장
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
+        isLive = true;
+        health = maxHealth;
+    }
+
+    public void Init(SpawnData data)
+    {
+        anim.runtimeAnimatorController = animControllers[data.spriteType];
+        speed = data.speed;
+        maxHealth = data.health;
+        health = data.health;
+
+    }
+
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!collision.CompareTag("Bullet"))
+        {
+            return;
+        }
+
+        health -= collision.GetComponent<Bullet>().damage;
+
+        if (health > 0)
+        {
+            
+        }
+        else
+        {
+            Dead();
+        }
+        
+    }
+
+    void Dead()
+    {
+        gameObject.SetActive(false);
     }
 }
