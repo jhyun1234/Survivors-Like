@@ -63,8 +63,9 @@ public class Reposition : MonoBehaviour
                 // 콜라이더가 비활성화된 적(사망 등)은 재배치 생략
                 if (myCollider.enabled)
                 {
-                    // 플레이어 진행 방향으로 20유닛 이동 + 랜덤 오프셋으로 같은 위치 집중 방지
-                    transform.Translate(playerDir * 10 + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f));
+                    // 플레이어 위치 기준 절대 좌표로 재배치 (상대 이동 시 멀어진 적이 Area 밖에 머무는 버그 방지)
+                    Vector3 dir = playerDir.sqrMagnitude > 0 ? playerDir.normalized : Vector3.right;
+                    transform.position = playerPos + dir * 20f + new Vector3(Random.Range(-3f, 3f), Random.Range(-3f, 3f), 0f);
                 }
                 break;
         }
