@@ -17,17 +17,20 @@ public class PlayerController : MonoBehaviour
     /// 플레이어 이동 속도. 인스펙터에서 조절 가능.
     /// </summary>
     public float speed;
-
+    public Scanner  scanner;
+    
+    
     Rigidbody2D rigid;       // 물리 이동에 사용하는 Rigidbody2D 컴포넌트
     SpriteRenderer spriter;  // 좌우 반전 처리에 사용하는 SpriteRenderer 컴포넌트
     Animator anim;           // 애니메이션 파라미터 제어에 사용하는 Animator 컴포넌트
-
+    
     void Awake()
     {
         // 컴포넌트 캐싱 (매 프레임 GetComponent 호출을 피하기 위해 Awake에서 한 번만 가져옴)
         rigid = GetComponent<Rigidbody2D>();
         spriter = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        scanner=GetComponent<Scanner>();
     }
 
     void Update()

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
@@ -11,6 +12,13 @@ public class Weapon : MonoBehaviour
     public int count; // 무기 배치 갯수
     public float speed; // 무기 회전 속도
 
+    float timer;
+    PlayerController player;
+
+    void Awake()
+    {
+        player = GetComponentInParent<PlayerController>();
+    }
     void Start()
     {
         Init();   
@@ -24,6 +32,13 @@ public class Weapon : MonoBehaviour
                 transform.Rotate(Vector3.back*speed*Time.deltaTime);
                 break;
             default:
+                timer += Time.deltaTime;
+
+                if (timer > speed)
+                {
+                    timer = 0f;
+                    Fire();
+                }
                 break;
         }
         // test
@@ -51,6 +66,7 @@ public class Weapon : MonoBehaviour
                 Place();
                 break;
             default:
+                speed = 0.3f;
                 break;
         }
     }
@@ -78,8 +94,26 @@ public class Weapon : MonoBehaviour
             bullet.Rotate(rotaeVector);
             bullet.Translate(bullet.up * 1.5f, Space.World);
             
-            bullet.GetComponent<Bullet>().Init(damage, -1); // -1 는 무한으로 관통
+            bullet.GetComponent<Bullet>().Init(damage, -1,Vector3.zero); // -1 는 무한으로 관통
 
         }
     }
+
+
+    void Fire()
+    {
+        if(!player.scanner.neareastTarget)
+            return;
+        
+        
+        Vector3 targetPos = player.scanner.neareastTarget.position;
+        Vector3 dir=targetPos-transform.position;
+        dir = dir.normalized;
+        
+        Transform bullet =Gamemanager.instance.pool.Get(prefabId).transform;
+        bullet.position=transform.position;
+        bullet.rotation=Quaternion.FromToRotation(Vector3.up,dir);
+        bullet.GetComponent<Bullet>().Init(damage,count,dir);
+    }
+    
 }
