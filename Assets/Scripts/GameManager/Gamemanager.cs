@@ -13,12 +13,20 @@ public class Gamemanager : MonoBehaviour
     /// </summary>
     public static Gamemanager instance;
 
+    [Header("# Game Control")]
     public float gameTime;
     public float maxGameTime = 4 * 10f;
+    
+    [Header("# Player Info")]
+    public int level;
+    public int kill;
+    public int exp;
+    public int[] nextExp = {10, 30 , 60 ,100, 150, 210, 280, 360, 450, 550};
 
     /// <summary>
     /// 플레이어 컨트롤러 참조. 이동 입력 벡터 등을 다른 스크립트에서 읽을 때 사용.
     /// </summary>
+    [Header("# Game Object Info")]
     public PlayerController player;
 
     /// <summary>
@@ -41,6 +49,17 @@ public class Gamemanager : MonoBehaviour
         if (gameTime > maxGameTime)
         {
             gameTime = maxGameTime;
+        }
+    }
+
+    public void GetExp()
+    {
+        exp++;
+        if (exp == nextExp[level])
+        {
+            level++;
+            exp = 0;
+            
         }
     }
 }

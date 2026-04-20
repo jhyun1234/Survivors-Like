@@ -49,7 +49,7 @@ public class EnemyMovement : MonoBehaviour
     void FixedUpdate()
     {
         // 사망 상태면 이동 처리 생략
-        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsTag("Hit"))
             return;
 
         // 적 → 플레이어 방향 벡터 (크기 = 현재 거리)
@@ -136,7 +136,7 @@ public class EnemyMovement : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.CompareTag("Bullet"))
+        if (!collision.CompareTag("Bullet")|| !isLive)
         {
             return;
         }
@@ -146,7 +146,8 @@ public class EnemyMovement : MonoBehaviour
 
         if (health > 0)
         {
-            anim.SetTrigger("Hit");    
+            if (HasParameter("Hit"))
+                anim.SetTrigger("Hit");
         }
         else
         {
@@ -155,7 +156,9 @@ public class EnemyMovement : MonoBehaviour
             rigid.simulated = false;
             sr.sortingOrder = 1;
             anim.SetBool("Dead",true);
-          
+            Gamemanager.instance.kill++;
+            Gamemanager.instance.GetExp();
+
         }
         
     }
@@ -171,7 +174,12 @@ public class EnemyMovement : MonoBehaviour
     void Dead()
     {
         gameObject.SetActive(false);
-        
-        
+    }
+
+    bool HasParameter(string paramName)
+    {
+        foreach (AnimatorControllerParameter param in anim.parameters)
+            if (param.name == paramName) return true;
+        return false;
     }
 }
