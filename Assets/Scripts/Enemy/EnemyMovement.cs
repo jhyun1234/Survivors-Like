@@ -31,21 +31,25 @@ public class EnemyMovement : MonoBehaviour
     bool isLive; // 테스트용 true
 
     Rigidbody2D rigid; // 물리 이동에 사용하는 Rigidbody2D 컴포넌트
+    Collider2D coll;
     SpriteRenderer sr; // 좌우 반전 처리에 사용하는 SpriteRenderer 컴포넌트
     Animator anim; // 애니메이션 제어에 사용하는 Animator 컴포넌트
-
+    WaitForFixedUpdate wait;
+    
     void Awake()
     {
         // 컴포넌트 캐싱 (Awake에서 한 번만 가져와 성능 최적화)
         rigid = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        wait=new WaitForFixedUpdate();
+        coll = GetComponent<Collider2D>();
     }
 
     void FixedUpdate()
     {
         // 사망 상태면 이동 처리 생략
-        if (!isLive)
+        if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsName("Hit"))
             return;
 
         // 적 → 플레이어 방향 벡터 (크기 = 현재 거리)
@@ -85,6 +89,8 @@ public class EnemyMovement : MonoBehaviour
         }
 
         // normalized: 방향만 유지하고 크기를 1로 정규화 → 속도가 거리에 영향받지 않음
+        
+        
         Vector2 nextVector = direction.normalized * Time.fixedDeltaTime * speed;
         rigid.MovePosition(rigid.position + nextVector);
 
@@ -108,7 +114,14 @@ public class EnemyMovement : MonoBehaviour
         // 씬 재시작 또는 플레이어 오브젝트 변경 시에도 올바른 타겟을 참조하도록 보장
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody2D>();
         isLive = true;
+        coll.enabled = true;
+        rigid.simulated = true;
+        sr.sortingOrder = 2;
+        anim.SetBool("Dead",false);
         health = maxHealth;
+        
+        
+        
     }
 
     public void Init(SpawnData data)
@@ -129,20 +142,36 @@ public class EnemyMovement : MonoBehaviour
         }
 
         health -= collision.GetComponent<Bullet>().damage;
+        StartCoroutine(KnockBack());
 
         if (health > 0)
         {
-            
+            anim.SetTrigger("Hit");    
         }
         else
         {
-            Dead();
+            isLive = false;
+            coll.enabled = false;
+            rigid.simulated = false;
+            sr.sortingOrder = 1;
+            anim.SetBool("Dead",true);
+          
         }
         
+    }
+
+    IEnumerator KnockBack()
+    {
+        yield return wait; // 다음 하나의 물리 프레임 딜레이
+        Vector3 playerPos = Gamemanager.instance.player.transform.position;
+        Vector3 dirVec = transform.position - playerPos;
+        rigid.AddForce(dirVec.normalized * 3, ForceMode2D.Impulse);
     }
 
     void Dead()
     {
         gameObject.SetActive(false);
+        
+        
     }
 }
