@@ -16,8 +16,10 @@ public class Gamemanager : MonoBehaviour
     [Header("# Game Control")]
     public float gameTime;
     public float maxGameTime = 4 * 10f;
-    
-    [Header("# Player Info")]
+
+    [Header("# Player Info")] 
+    public int health;
+    public int maxHealth;
     public int level;
     public int kill;
     public int exp;
@@ -38,6 +40,11 @@ public class Gamemanager : MonoBehaviour
     {
         // 싱글톤 초기화: 이 오브젝트를 전역 인스턴스로 등록
         instance = this;
+    }
+
+    void Start()
+    {
+        health = maxHealth;
     }
     
     void Update()
