@@ -9,9 +9,12 @@ public class Item : MonoBehaviour
     public ItemData data;
     public int level;
     public Weapon weapon;
+    public Gear gear;
 
     Image icon;
     Text textLevel;
+    Text textName;
+    Text textDesc;
 
     void Awake()
     {
@@ -20,12 +23,33 @@ public class Item : MonoBehaviour
         
         Text[] texts =  GetComponentsInChildren<Text>();
         textLevel=texts[0];
+        textName=texts[1];
+        textDesc=texts[2];
+        textName.text=data.itemName;
     }
 
-    void LateUpdate()
+    void OnEnable()
     {
         textLevel.text = "Lv." + (level + 1);
+        switch(data.itemtype)
+        {
+            case ItemData.ItemType.Melee:
+            case ItemData.ItemType.Range:
+                if (level < data.damages.Length)
+                    textDesc.text = string.Format(data.itemDescription, data.damages[level] * 100, data.counts[level]);
+                break;
+            case ItemData.ItemType.Glove:
+            case ItemData.ItemType.Shoe:
+                if (level < data.damages.Length)
+                    textDesc.text = string.Format(data.itemDescription, data.damages[level]);
+                break;
+            default:
+                textDesc.text = string.Format(data.itemDescription);
+                break;
+        }
+        
     }
+   
 
     public void OnClick()
     {
@@ -50,17 +74,29 @@ public class Item : MonoBehaviour
                   weapon.LevelUp(nextDamage, nextCount);
 
               }
+              level++;
               break;
           case ItemData.ItemType.Glove:
-              break;
           case ItemData.ItemType.Shoe:
-              break;
+            if(level == 0)
+            {
+                GameObject newGear = new GameObject();
+                gear = newGear.AddComponent<Gear>();
+                gear.Init(data);
+            }
+            else
+            {
+                float nextRate = data.damages[level];
+                gear.LevelUp(nextRate);
+             }
+            level++;
+            break;
           case ItemData.ItemType.Heal:
+                Gamemanager.instance.health = Gamemanager.instance.maxHealth;
               break;
           
         }
 
-        level++;
 
         if (level == data.damages.Length)
         {

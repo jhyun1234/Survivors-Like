@@ -48,6 +48,7 @@ public class EnemyMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Gamemanager.instance.isLive == false) return;
         // 사망 상태면 이동 처리 생략
         if (!isLive || anim.GetCurrentAnimatorStateInfo(0).IsTag("Hit"))
             return;
@@ -100,6 +101,7 @@ public class EnemyMovement : MonoBehaviour
 
     void LateUpdate()
     {
+        if (Gamemanager.instance.isLive == false) return;
         // 사망 상태면 반전 처리 생략
         if (!isLive)
             return;

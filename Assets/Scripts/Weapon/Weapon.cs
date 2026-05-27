@@ -22,6 +22,7 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
+        if (Gamemanager.instance.isLive == false) return;
         switch (id)
         {
             case 0:
@@ -37,11 +38,7 @@ public class Weapon : MonoBehaviour
                 }
                 break;
         }
-        // test
-        if (Input.GetButtonDown("Jump"))
-        {
-            LevelUp(20,5);
-        }
+       
     }
 
     public void LevelUp(float damage, int count)
@@ -51,6 +48,8 @@ public class Weapon : MonoBehaviour
         
         if(id== 0)
             Place();
+
+        player.BroadcastMessage("ApplyGear", SendMessageOptions.DontRequireReceiver);
     }
 
     public void Init(ItemData data)
@@ -81,9 +80,17 @@ public class Weapon : MonoBehaviour
                 Place();
                 break;
             default:
-                speed = 0.3f;
+                speed = 0.4f;
                 break;
         }
+
+        /*
+        //Hand Set
+        Hand hand = player.hands[(int)data.itemtype];
+        hand.spriter.sprite=data.hand;
+        hand.gameObject.SetActive(true);
+        */
+        player.BroadcastMessage("ApplyGear",SendMessageOptions.DontRequireReceiver);
     }
 
     void Place()

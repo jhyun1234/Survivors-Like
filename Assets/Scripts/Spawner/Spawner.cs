@@ -33,6 +33,7 @@ public class Spawner : MonoBehaviour
 
     void Update()
     {
+        if (Gamemanager.instance.isLive == false) return;
         timer += Time.deltaTime;
         level = Mathf.Min(Mathf.FloorToInt(Gamemanager.instance.gameTime / 10f), spawnData.Length - 1);
 
