@@ -24237,12 +24237,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameTime: 0
   maxGameTime: 40
+  isLive: 1
   health: 0
   maxHealth: 0
   level: 0
   kill: 0
   exp: 0
-  nextExp: 0a0000001e0000003c0000006400000096000000d20000001801000068010000c201000026020000
+  nextExp: 0100000002000000030000000400000005000000060000000700000008000000090000000a000000
   player: {fileID: 1055480101}
   uilevelUp: {fileID: 1127431170}
   pool: {fileID: 1323786381}
